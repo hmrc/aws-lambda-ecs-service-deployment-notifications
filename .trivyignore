@@ -1,0 +1,23 @@
+# We do want to specify tags, but we can't make trivy ignore valid use-cases
+# So, we need to ignore this rule
+AVD-DS-0001
+
+# We're not currently worried about the release container running as root and
+# it would be misleading to specify a USER that will not actually be used.
+# e.g.
+# AWS Lambda will run as some non-root user
+#    https://docs.aws.amazon.com/lambda/latest/dg/images-create.html#images-reqs
+# For local batect containers, we typically use `run_as_current_user`
+AVD-DS-0002
+
+# These containers do not need a healthcheck
+AVD-DS-0026
+
+# We don't use CMK for our Cloudwatch log groups
+AVD-AWS-0017
+
+# We shouldn't have the * on `logs:CreateLogStream` resources, but we do
+AVD-AWS-0057
+
+# We don't use x-ray
+AVD-AWS-0066
