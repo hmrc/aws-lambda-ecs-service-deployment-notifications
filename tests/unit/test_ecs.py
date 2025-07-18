@@ -4,6 +4,21 @@ import pytest
 
 class TestServiceArn:
     @pytest.mark.parametrize(
+        "service_arn",
+        [
+            "arn:aws:ecs:us-west-2:111122223333:service/default/servicetest",
+            "arn:aws:ecs:eu-west-2:111122223333:service/example/default",
+            "arn:aws:ecs:eu-west-2:111122223333:service/testing/servicename",
+        ],
+    )
+    def test_constructor_stores_arn(
+        self,
+        service_arn: str,
+    ):
+        service_arn_object = ecs.ServiceArn(service_arn)
+        assert service_arn_object.arn == service_arn
+
+    @pytest.mark.parametrize(
         "service_arn, expected_cluster_name",
         [
             (
