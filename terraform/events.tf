@@ -19,7 +19,8 @@ resource "aws_cloudwatch_event_target" "ecs_service_deployment_notifications" {
 resource "aws_lambda_permission" "allow_lambda_to_execute_from_eventbridge_on_event" {
   statement_id  = "AllowExecutionFromServiceDeploymentEvents"
   action        = "lambda:InvokeFunction"
-  function_name = module.lambda.lambda_alias_arn
+  function_name = module.lambda.lambda_name
+  qualifier     = module.lambda.lambda_alias_name
   principal     = "events.amazonaws.com"
   source_arn    = aws_cloudwatch_event_rule.ecs_service_deployment.arn
 }
