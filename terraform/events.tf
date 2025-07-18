@@ -13,13 +13,13 @@ resource "aws_cloudwatch_event_rule" "ecs_service_deployment" {
 resource "aws_cloudwatch_event_target" "ecs_service_deployment_notifications" {
   target_id = "ecs-service-deployment-notifications-${var.cluster_name}"
   rule      = aws_cloudwatch_event_rule.ecs_service_deployment.name
-  arn       = module.lambda.lambda_arn
+  arn       = module.lambda.lambda_alias_arn
 }
 
 resource "aws_lambda_permission" "allow_lambda_to_execute_from_eventbridge_on_event" {
   statement_id  = "AllowExecutionFromServiceDeploymentEvents"
   action        = "lambda:InvokeFunction"
-  function_name = module.lambda.lambda_arn
+  function_name = module.lambda.lambda_alias_arn
   principal     = "events.amazonaws.com"
   source_arn    = aws_cloudwatch_event_rule.ecs_service_deployment.arn
 }
