@@ -1,5 +1,5 @@
 module "lambda" {
-  source = "git::ssh://git@github.com/hmrc/infrastructure-pipeline-lambda-build//terraform/modules/aws-lambda-container"
+  source = "git::ssh://git@github.com/hmrc/terraform-aws-lambda-container.git"
 
   account_engineering_boundary = var.account_engineering_boundary
 
