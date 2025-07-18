@@ -17,5 +17,6 @@ class ServiceArn:
         if resource_split[0] != "service":
             raise ValueError("ARN does not have service path")
 
+        self.arn = service_arn
         self.cluster_name = resource_split[1]
         self.service_name = resource_split[2]
