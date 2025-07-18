@@ -1,8 +1,11 @@
 
 # aws-lambda-ecs-service-deployment-notifications
 
-This is a placeholder README.md for a new repository
+This Lambda sends Slack notifications when receiving ECS service deployment events for a configured cluster.
 
-### License
+## Configuration
 
-This code is open source software licensed under the [Apache 2.0 License]("http://www.apache.org/licenses/LICENSE-2.0.html").
+### Environment variables
+
+`CLUSTER_NAME` - name of the ECS cluster to produce notifications for
+`SLACK_CHANNEL` - name of the Slack channel to post service deployment notifications in

@@ -1,0 +1,71 @@
+project_name: aws-lambda-ecs-service-deployment-notifications
+forbid_telemetry: true
+
+include:
+  - type: git
+    repo: git@github.com:hmrc/infrastructure-pipeline-lambda-build.git
+    ref: python/3.13
+
+containers:
+  release:
+    build_directory: .
+    dockerfile: containers/release/Dockerfile
+    additional_hostnames:
+      - lambda  # for integration tests
+  test:
+    build_directory: .
+    dockerfile: containers/test/Dockerfile
+    volumes:
+      - local: .
+        container: /app
+
+tasks:
+  local:
+    prerequisites:
+      - build
+    description: Start the integration dependencies to run integration tests via your editor
+    run:
+      container: release
+      entrypoint: /bin/sh
+
+  test:unit:
+    description: Run all Python tests.
+    group: Test
+    prerequisites:
+      - build:test-base
+    run:
+      container: test
+      entrypoint: pytest
+      command: -v tests/unit
+
+  test:integration:
+    description: Run the integration tests
+    prerequisites:
+      - build:release
+      - build:test-base
+    dependencies:
+      - release
+    group: Test
+    run:
+      container: test-base
+      entrypoint: pytest
+      command: -vv tests/integration
+
+  build:release:
+    description: Build the Lambda function release image
+    prerequisites:
+      - build:release-base
+    group: Build
+    run:
+      container: release
+      entrypoint: sh -c
+      command: "'python3 --version'"
+
+  shell:release:
+    description: Start a shell in the release container
+    group: Shell
+    prerequisites:
+      - build:release-base
+    run:
+      container: release
+      entrypoint: bash
