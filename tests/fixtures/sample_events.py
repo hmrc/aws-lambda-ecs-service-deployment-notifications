@@ -1,8 +1,6 @@
-# 123456789012 is the default account number used by moto
 account = "123456789012"
 region = "eu-west-2"
-cluster_name_notified = "notified"
-cluster_name_unnotified = "unnotified"
+cluster_name = "cluster-name"
 service_name = "service-name"
 
 _event_base = {
@@ -13,6 +11,7 @@ _event_base = {
     "account": account,
     "time": "2020-05-23T12:31:14Z",
     "region": region,
+    "resources": [f"arn:aws:ecs:{region}:{account}:service/{cluster_name}/{service_name}"],
 }
 
 event_in_progress = _event_base | {
@@ -32,7 +31,7 @@ slack_payload_in_progress = {
     "message_content": {
         "fields": [
             {"short": True, "title": "Service Name", "value": service_name},
-            {"short": True, "title": "Cluster Name", "value": cluster_name_notified},
+            {"short": True, "title": "Cluster Name", "value": cluster_name},
             {
                 "short": False,
                 "title": "Reason",
@@ -60,7 +59,7 @@ slack_payload_completed = {
         "color": "good",
         "fields": [
             {"short": True, "title": "Service Name", "value": service_name},
-            {"short": True, "title": "Cluster Name", "value": cluster_name_notified},
+            {"short": True, "title": "Cluster Name", "value": cluster_name},
             {
                 "short": False,
                 "title": "Reason",
@@ -88,7 +87,7 @@ slack_payload_failed = {
         "color": "danger",
         "fields": [
             {"short": True, "title": "Service Name", "value": service_name},
-            {"short": True, "title": "Cluster Name", "value": cluster_name_notified},
+            {"short": True, "title": "Cluster Name", "value": cluster_name},
             {
                 "short": False,
                 "title": "Reason",
@@ -96,12 +95,4 @@ slack_payload_failed = {
             },
         ],
     },
-}
-
-
-event_resources_notified = {
-    "resources": [f"arn:aws:ecs:{region}:{account}:service/{cluster_name_notified}/{service_name}"],
-}
-event_resources_unnotified = {
-    "resources": [f"arn:aws:ecs:{region}:{account}:service/{cluster_name_unnotified}/{service_name}"],
 }

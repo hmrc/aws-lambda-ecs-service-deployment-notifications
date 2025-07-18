@@ -11,10 +11,6 @@ dependencies = [
     "boto3-stubs[lambda]>=1.39.6",
 ]
 
-[build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
-
 [tool.pytest.ini_options]
 pythonpath = "src"
 

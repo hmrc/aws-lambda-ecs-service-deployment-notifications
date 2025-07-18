@@ -24,17 +24,17 @@ def mock_lambda_client():
     "event, expected_payload",
     [
         pytest.param(
-            sample_events.event_in_progress | sample_events.event_resources_notified,
+            sample_events.event_in_progress,
             sample_events.slack_payload_in_progress,
             id="in_progress_notified",
         ),
         pytest.param(
-            sample_events.event_completed | sample_events.event_resources_notified,
+            sample_events.event_completed,
             sample_events.slack_payload_completed,
             id="completed_notified",
         ),
         pytest.param(
-            sample_events.event_failed | sample_events.event_resources_notified,
+            sample_events.event_failed,
             sample_events.slack_payload_failed,
             id="failed_notified",
         ),
@@ -43,7 +43,7 @@ def mock_lambda_client():
 @unittest.mock.patch.dict(
     os.environ,
     {
-        "CLUSTER_NAME": "notified",
+        "CLUSTER_NAME": sample_events.cluster_name,
         "SLACK_CHANNEL": "event-integ-recycle",
         "SLACK_NOTIFICATIONS_LAMBDA_ARN": "test-arn",
     },
@@ -70,15 +70,15 @@ def test_handler_invokes_slack_notifications_lambda(
     "sample_event",
     [
         pytest.param(
-            sample_events.event_in_progress | sample_events.event_resources_unnotified,
+            sample_events.event_in_progress,
             id="in_progress_unnotified",
         ),
         pytest.param(
-            sample_events.event_completed | sample_events.event_resources_unnotified,
+            sample_events.event_completed,
             id="completed_unnotified",
         ),
         pytest.param(
-            sample_events.event_failed | sample_events.event_resources_unnotified,
+            sample_events.event_failed,
             id="failed_unnotified",
         ),
     ],
@@ -86,7 +86,7 @@ def test_handler_invokes_slack_notifications_lambda(
 @unittest.mock.patch.dict(
     os.environ,
     {
-        "CLUSTER_NAME": "notified",
+        "CLUSTER_NAME": f"not-{sample_events.cluster_name}",
         "SLACK_CHANNEL": "event-integ-recycle",
         "SLACK_NOTIFICATIONS_LAMBDA_ARN": "test-arn",
     },
