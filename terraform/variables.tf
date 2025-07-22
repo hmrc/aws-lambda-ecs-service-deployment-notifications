@@ -32,3 +32,15 @@ variable "slack_notifications_lambda_arn" {
   description = "ARN of the Slack notifications Lambda"
   type        = string
 }
+
+variable "service_name_prefix" {
+  description = <<EOT
+  Services to notify about must start with this prefix.
+
+  Any service that starts with this prefix will be monitored for deployment events. If it does not start with this prefix, it will not be monitored.
+  Leave this empty to monitor all services in the cluster.
+  EOT
+
+  type    = string
+  default = ""
+}
