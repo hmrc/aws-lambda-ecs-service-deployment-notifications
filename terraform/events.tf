@@ -5,7 +5,7 @@ resource "aws_cloudwatch_event_rule" "ecs_service_deployment" {
     source        = ["aws.ecs"],
     "detail-type" = ["ECS Deployment State Change"],
     resources = [{
-      prefix = "arn:aws:ecs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:service/${var.cluster_name}/"
+      prefix = "arn:aws:ecs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:service/${var.cluster_name}/${var.service_name_prefix}"
     }]
   })
 }
